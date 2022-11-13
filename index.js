@@ -1,7 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const { engine } = require('express-handlebars');
-const { Sequelize } = require('sequelize');
+const bodyParser = require('body-parser');
 
 const app = express();
 
@@ -13,15 +13,9 @@ const app = express();
     app.engine('handlebars', engine({defaultLayout: 'main'}));
     app.set('view engine', 'handlebars');
 
-    // Conexão com o banco de dados
-    const sequelize = new Sequelize(
-        process.env.DB_DATABASE,
-        process.env.DB_USERNAME,
-        process.env.DB_PASSWORD, {
-            host: process.env.DB_HOST,
-            dialect: process.env.DB_CONNECTION
-        }
-    );
+    // Body Parser
+    app.use(bodyParser.urlencoded({extended: false}));
+    app.use(bodyParser.json());
 //
 
 // Rotas
@@ -29,6 +23,11 @@ app.get('/cad', (req, res) => {
     res.render('formulario');
 });
 
+app.post('/add', (req, res) => {
+    res.send('Título: ' + req.body.titulo + '. Conteúdo: ' + req.body.conteudo);
+});
+
+// Servidor
 app.listen(port, () => {
     console.log(`Servidor rodando na porta ${port}`);
 });
