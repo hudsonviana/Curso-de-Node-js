@@ -24,6 +24,11 @@ const app = express();
     );
 //
 
+// Rotas
+app.get('/cad', (req, res) => {
+    res.render('formulario');
+});
+
 app.listen(port, () => {
     console.log(`Servidor rodando na porta ${port}`);
 });
